@@ -10,9 +10,13 @@ interface Props {
 }
 const { lang } = Astro.props;
 const t = content[lang];
-const home = lang === 'en' ? '/' : '/pt/';
-const other = lang === 'en' ? '/pt/' : '/';
+// Every internal path goes through `url` so the site works under a base path too.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const url = (path: string) => base + path;
+const home = url(lang === 'en' ? '/' : '/pt/');
+const other = url(lang === 'en' ? '/pt/' : '/');
 const site = Astro.site!;
+const cvHref = url(t.contact.cvHref);
 ---
 
 <!doctype html>
@@ -22,11 +26,11 @@ const site = Astro.site!;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{t.meta.title}</title>
     <meta name="description" content={t.meta.description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
     <link rel="canonical" href={new URL(home, site)} />
-    <link rel="alternate" hreflang="en" href={new URL('/', site)} />
-    <link rel="alternate" hreflang="pt-BR" href={new URL('/pt/', site)} />
-    <link rel="alternate" hreflang="x-default" href={new URL('/', site)} />
+    <link rel="alternate" hreflang="en" href={new URL(url('/'), site)} />
+    <link rel="alternate" hreflang="pt-BR" href={new URL(url('/pt/'), site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(url('/'), site)} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={t.meta.title} />
     <meta property="og:description" content={t.meta.description} />
@@ -65,7 +69,7 @@ const site = Astro.site!;
           </div>
           <div class="hero__cta">
             <a class="btn btn--solid" href="#work">{t.hero.ctaWork}</a>
-            <a class="btn" href={t.contact.cvHref} download>{t.hero.ctaCv}</a>
+            <a class="btn" href={cvHref} download>{t.hero.ctaCv}</a>
           </div>
         </div>
       </section>
@@ -226,7 +230,7 @@ const site = Astro.site!;
         <ul class="contact__links">
           <li><a href={LINKEDIN} target="_blank" rel="noopener">LinkedIn</a></li>
           <li><a href={GITHUB} target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href={t.contact.cvHref} download>{t.contact.cv}</a></li>
+          <li><a href={cvHref} download>{t.contact.cv}</a></li>
         </ul>
         <p class="contact__foot">{t.footer}</p>
       </section>
