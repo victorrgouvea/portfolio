@@ -542,9 +542,12 @@ mark {
   align-items: center;
   gap: clamp(0.8rem, 1.6vw, 1.4rem);
 }
+/* All sheets share one grid cell, so the fan's spread no longer depends on column width. */
 .art-dd__pages {
   position: relative;
+  display: grid;
   padding-top: 0.5rem;
+  padding-bottom: calc(3 * 0.9rem);
 }
 .sheet {
   position: relative;
@@ -553,12 +556,11 @@ mark {
   padding: 0.7rem 0.6rem;
   display: grid;
   gap: 5px;
+  grid-area: 1 / 1;
+  align-self: start;
   width: 78%;
-  transform: translate(calc(var(--i) * 7%), calc(var(--i) * 6px)) rotate(calc((var(--i) - 2) * 2.5deg));
+  transform: translate(calc(var(--i) * 7%), calc(var(--i) * 0.9rem)) rotate(calc((var(--i) - 2) * 2.5deg));
   box-shadow: 0 6px 18px rgb(0 0 0 / 0.28);
-}
-.sheet + .sheet {
-  margin-top: -78%;
 }
 .sheet i {
   display: block;
