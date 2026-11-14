@@ -1,0 +1,117 @@
+---
+interface Props {
+  id: 'deepdive' | 'ventiur' | 'smartzap' | 'beatfit' | 'fintz';
+  art: Record<string, string>;
+}
+const { id, art } = Astro.props;
+const lines = (n: number, hot: number[] = []) =>
+  Array.from({ length: n }, (_, i) => ({ w: 55 + ((i * 37) % 45), hot: hot.includes(i) }));
+---
+
+{
+  id === 'deepdive' && (
+    <div class="art art-dd">
+      <div class="art-dd__pages">
+        {[0, 1, 2, 3].map((i) => (
+          <div class="sheet" style={`--i:${i}`}>
+            {lines(9, i === 3 ? [2, 5, 6] : []).map((l) => (
+              <i class:list={[{ hot: l.hot }]} style={`width:${l.w}%`} />
+            ))}
+          </div>
+        ))}
+        <p class="art__label">{art.in}</p>
+      </div>
+      <ol class="art-dd__steps">
+        <li>{art.a}</li>
+        <li>{art.b}</li>
+        <li>{art.c}</li>
+        <li>{art.d}</li>
+      </ol>
+      <div class="art-dd__out">
+        <div class="grid">
+          {Array.from({ length: 20 }, (_, i) => (
+            <i class:list={[{ head: i < 4, hot: i === 9 || i === 14 }]} />
+          ))}
+        </div>
+        <p class="art__label">{art.out}</p>
+      </div>
+    </div>
+  )
+}
+
+{
+  id === 'ventiur' && (
+    <div class="art art-vt">
+      <div class="art-vt__bar">
+        <span class="art-vt__search">{art.search}</span>
+        <span class="art-vt__count">{art.count}</span>
+      </div>
+      <div class="art-vt__chips">
+        <span>{art.f1}</span>
+        <span class="on">{art.f2}</span>
+        <span>{art.f3}</span>
+      </div>
+      <ul class="art-vt__rows">
+        {[62, 48, 71, 40, 56].map((w, i) => (
+          <li>
+            <b style={`width:${w}%`} />
+            <i style={`width:${90 - w / 2}%`} />
+            {i === 1 && <em>{art.edited}</em>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+{
+  id === 'smartzap' && (
+    <div class="art art-sz">
+      <p class="bubble bubble--me">{art.u1}</p>
+      <p class="bubble">{art.b1}</p>
+      <p class="bubble bubble--me">{art.u2}</p>
+      <p class="bubble">{art.b2}</p>
+      <p class="art__label">{art.users}</p>
+    </div>
+  )
+}
+
+{
+  id === 'beatfit' && (
+    <div class="art art-bf">
+      <div class="phone">
+        <p class="phone__eyebrow">{art.title}</p>
+        <p class="phone__title">{art.w}</p>
+        <ul>
+          {[art.e1, art.e2, art.e3].map((e, i) => (
+            <li>
+              <span>{e}</span>
+              <span>
+                {4 - (i % 2)} {art.sets}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p class="phone__btn">{art.start}</p>
+      </div>
+    </div>
+  )
+}
+
+{
+  id === 'fintz' && (
+    <div class="art art-fz">
+      <ol>
+        <li>{art.a}</li>
+        <li>{art.b}</li>
+        <li class="on">{art.c}</li>
+        <li>{art.d}</li>
+        <li class="on">{art.e}</li>
+        <li>{art.f}</li>
+      </ol>
+      <svg viewBox="0 0 300 90" preserveAspectRatio="none">
+        <polyline points="0,70 30,62 60,66 90,48 120,54 150,36 180,42 210,24 240,30 270,14 300,18" />
+      </svg>
+    </div>
+  )
+}

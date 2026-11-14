@@ -1,0 +1,239 @@
+---
+import '@fontsource-variable/bricolage-grotesque/wdth.css';
+import '@fontsource-variable/instrument-sans';
+import '../styles/global.css';
+import { content, EMAIL, GITHUB, LINKEDIN, type Lang } from '../i18n/content';
+import CaseArt from './CaseArt.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = content[lang];
+const home = lang === 'en' ? '/' : '/pt/';
+const other = lang === 'en' ? '/pt/' : '/';
+const site = Astro.site!;
+---
+
+<!doctype html>
+<html lang={lang === 'en' ? 'en' : 'pt-BR'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={new URL(home, site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/', site)} />
+    <link rel="alternate" hreflang="pt-BR" href={new URL('/pt/', site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/', site)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={new URL(home, site)} />
+    <meta name="theme-color" content="#e9ecf2" />
+  </head>
+  <body>
+    <a class="skip" href="#work">{t.hero.ctaWork}</a>
+
+    <header class="nav" data-nav>
+      <a class="nav__name" href={home}>Victor Gouvêa</a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#work">{t.nav.work}</a>
+        <a href="#experience">{t.nav.experience}</a>
+        <a href="#skills">{t.nav.skills}</a>
+        <a href="#contact">{t.nav.contact}</a>
+      </nav>
+      <a class="nav__lang" href={other} hreflang={lang === 'en' ? 'pt-BR' : 'en'} aria-label={t.nav.switchLabel} data-lang-switch>
+        <span aria-hidden="true" class:list={[{ on: lang === 'en' }]}>EN</span>
+        <span aria-hidden="true" class:list={[{ on: lang === 'pt' }]}>PT</span>
+      </a>
+    </header>
+
+    <main>
+      <section class="hero" data-hero>
+        <canvas class="hero__canvas" data-hero-canvas aria-hidden="true"></canvas>
+        <h1 class="hero__name" data-hero-name aria-label="Victor Gouvêa">
+          <span>Victor</span>
+          <span>Gouvêa</span>
+        </h1>
+        <div class="hero__foot">
+          <p class="hero__lede">{t.hero.lede}</p>
+          <div class="hero__meta">
+            <p>{t.hero.role}</p>
+            <p>{t.hero.place}</p>
+          </div>
+          <div class="hero__cta">
+            <a class="btn btn--solid" href="#work">{t.hero.ctaWork}</a>
+            <a class="btn" href={t.contact.cvHref} download>{t.hero.ctaCv}</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="statement" aria-label={t.meta.description}>
+        {
+          t.statement.map((para) => (
+            <p>
+              {para.map((frag) =>
+                typeof frag === 'string' ? frag : <mark data-mark>{frag.mark}</mark>,
+              )}
+            </p>
+          ))
+        }
+      </section>
+
+      <section class="work" id="work">
+        <div class="section-head section-head--dark">
+          <h2>{t.work.title}</h2>
+          <p>{t.work.intro}</p>
+        </div>
+        <div class="cases">
+          {
+            t.cases.map((c) => (
+              <article class={`case case--${c.id}`}>
+                <div class="case__inner">
+                  <div class="case__text">
+                    <p class="case__kind">
+                      <span>{c.kind}</span>
+                      <span>{c.years}</span>
+                    </p>
+                    <h3 class="case__name">{c.name}</h3>
+                    <p class="case__summary">{c.summary}</p>
+                    <ul class="case__points">
+                      {c.points.map((p) => (
+                        <li>{p}</li>
+                      ))}
+                    </ul>
+                    <dl class="case__facts">
+                      <div>
+                        <dt>{t.work.roleLabel}</dt>
+                        <dd>{c.role}</dd>
+                      </div>
+                      <div>
+                        <dt>{t.work.stackLabel}</dt>
+                        <dd>{c.stack.join(', ')}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                  <div class="case__art" aria-hidden="true">
+                    <CaseArt id={c.id} art={c.art} />
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="more" id="more">
+        <div class="section-head">
+          <h2>{t.more.title}</h2>
+          <p>{t.more.intro}</p>
+        </div>
+        {
+          t.more.groups.map((g) => (
+            <div class="more__group">
+              <h3>{g.name}</h3>
+              <ul class="rows">
+                {g.items.map((it) => (
+                  <li class="row">
+                    <span class="row__name">
+                      {it.href ? (
+                        <a href={it.href} target="_blank" rel="noopener">
+                          {it.name}
+                        </a>
+                      ) : (
+                        it.name
+                      )}
+                    </span>
+                    <span class="row__what">{it.what}</span>
+                    <span class="row__stack">{it.stack}</span>
+                    <span class="row__year">{it.year}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+        <p class="more__foot">
+          {t.more.footnote}
+          <a href="https://codevon.com/portfolio" target="_blank" rel="noopener">codevon.com/portfolio</a>.
+        </p>
+      </section>
+
+      <section class="xp" id="experience">
+        <div class="section-head">
+          <h2>{t.experience.title}</h2>
+        </div>
+        <ol class="xp__list">
+          {
+            t.experience.jobs.map((j) => (
+              <li class="xp__item">
+                <p class="xp__period">{j.period}</p>
+                <div>
+                  <h3>{j.company}</h3>
+                  <p class="xp__role">
+                    {j.role}, {j.place}
+                  </p>
+                  <ul>
+                    {j.body.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ))
+          }
+          <li class="xp__item">
+            <p class="xp__period">{t.experience.education.period}</p>
+            <div>
+              <h3>{t.experience.education.school}</h3>
+              <p class="xp__role">
+                {t.experience.educationTitle}: {t.experience.education.degree}
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="skills" id="skills">
+        <div class="section-head">
+          <h2>{t.skills.title}</h2>
+        </div>
+        <div class="skills__grid">
+          {
+            t.skills.groups.map((g) => (
+              <div>
+                <h3>{g.name}</h3>
+                <ul>
+                  {g.items.map((s) => (
+                    <li>{s}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+        <p class="skills__gh">
+          <a href={GITHUB} target="_blank" rel="noopener">{t.skills.github}</a>
+        </p>
+      </section>
+
+      <section class="contact" id="contact">
+        <h2>{t.contact.title}</h2>
+        <p>{t.contact.body}</p>
+        <a class="contact__mail" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        <ul class="contact__links">
+          <li><a href={LINKEDIN} target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href={GITHUB} target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href={t.contact.cvHref} download>{t.contact.cv}</a></li>
+        </ul>
+        <p class="contact__foot">{t.footer}</p>
+      </section>
+    </main>
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>
