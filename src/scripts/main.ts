@@ -6,11 +6,24 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- Language: remember an explicit choice ---------- */
 
-document.querySelector<HTMLAnchorElement>('[data-lang-switch]')?.addEventListener('click', (e) => {
-  const a = e.currentTarget as HTMLAnchorElement;
-  // Keep the reader at the same section when switching language.
-  if (location.hash) a.href = a.pathname + location.hash;
+// Switching language keeps the reader where they were on the page (top stays top).
+const KEEP_SCROLL = 'lang-switch-scroll';
+const scrollRange = () => Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+
+document.querySelector<HTMLAnchorElement>('[data-lang-switch]')?.addEventListener('click', () => {
+  try {
+    sessionStorage.setItem(KEEP_SCROLL, String(window.scrollY / scrollRange()));
+  } catch {}
 });
+
+try {
+  const kept = sessionStorage.getItem(KEEP_SCROLL);
+  if (kept !== null) {
+    sessionStorage.removeItem(KEEP_SCROLL);
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, Number(kept) * scrollRange());
+  }
+} catch {}
 
 /* ---------- Nav: hide on scroll down, show on scroll up ---------- */
 
