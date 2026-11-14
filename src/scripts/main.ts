@@ -59,20 +59,38 @@ if (!reduced) {
     });
   });
 
-  // The marker is drawn across each phrase as it is read.
-  document.querySelectorAll<HTMLElement>('[data-mark]').forEach((mark) => {
-    gsap.fromTo(
-      mark,
-      { '--fill': '0%' },
-      {
-        '--fill': '100%',
-        ease: 'none',
-        // Starts as the phrase enters the screen and is complete while it is still in the
-        // lower part of it, so the last phrase is fully marked before the next section shows.
-        scrollTrigger: { trigger: mark, start: 'top 100%', end: 'top 85%', scrub: 0.3 },
+  // The marker is drawn across the phrases one after another, tied to scroll. The section
+  // is held in place for a short stretch once it is fully in view, so the last phrases are
+  // marked at a readable pace and everything is done before the next section appears.
+  const statement = document.querySelector<HTMLElement>('.statement');
+  const marks = gsap.utils.toArray<HTMLElement>('[data-mark]');
+  if (statement && marks.length) {
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    const hold = ScrollTrigger.create({
+      trigger: statement,
+      start: 'bottom bottom',
+      end: () => `+=${Math.round(window.innerHeight * 0.45)}`,
+      pin: true,
+      anticipatePin: 1,
+    });
+
+    // Longer phrases get a proportionally longer share of the scroll.
+    const timeline = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: {
+        trigger: statement,
+        start: 'top 70%',
+        end: () => hold.end,
+        scrub: 0.4,
+        invalidateOnRefresh: true,
       },
-    );
-  });
+    });
+    marks.forEach((mark) => {
+      gsap.set(mark, { '--fill': '0%' });
+      timeline.to(mark, { '--fill': '100%', duration: (mark.textContent ?? '').length || 1 });
+    });
+  }
 }
 
 /* ---------- Hero: the name assembled out of scattered points ---------- */
