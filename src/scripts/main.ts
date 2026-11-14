@@ -132,17 +132,20 @@ function initHero() {
     if ('letterSpacing' in o) (o as any).letterSpacing = style.letterSpacing;
     o.textBaseline = 'alphabetic';
     o.fillStyle = '#000';
-    name!.querySelectorAll('span').forEach((span) => {
-      const r = span.getBoundingClientRect();
-      const text = (span.textContent ?? '').toUpperCase();
+    name!.querySelectorAll<HTMLElement>('[data-chunk]').forEach((chunk) => {
+      const r = chunk.getBoundingClientRect();
+      const text = (chunk.textContent ?? '').toUpperCase();
       const m = o.measureText(text);
-      // Centre the glyph box vertically inside the line box.
-      const baseline = r.top - rect.top + (r.height + m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2;
+      // The box is either the font's content area (inline) or a tighter line box (block);
+      // in both cases the content area is centred in it.
+      const ascent = m.fontBoundingBoxAscent;
+      const descent = m.fontBoundingBoxDescent;
+      const baseline = r.top - rect.top + (r.height - (ascent + descent)) / 2 + ascent;
       o.fillText(text, r.left - rect.left, baseline);
     });
 
-    const gap = w < 700 ? 3 : w < 1400 ? 5 : 6;
-    size = gap < 4 ? gap - 0.8 : gap - 1.6;
+    const gap = w < 700 ? 4 : w < 1400 ? 5 : 6;
+    size = gap - (gap < 5 ? 1.2 : 1.6);
     const data = o.getImageData(0, 0, w, h).data;
     const next: Dot[] = [];
     for (let y = 0; y < h; y += gap) {

@@ -169,17 +169,27 @@ a {
 .hero__name {
   font-family: var(--display);
   font-weight: 800;
-  font-size: min(22vw, 36svh);
-  line-height: 0.84;
+  font-size: min(22vw, 34svh);
+  line-height: 0.92;
   letter-spacing: -0.035em;
   text-transform: uppercase;
   margin-left: -0.04em;
   margin-top: auto;
   margin-bottom: auto;
 }
-.hero__name span {
+.hero__line {
   display: block;
   width: fit-content;
+}
+/* Narrow portrait screens: the name becomes a four-line poster, three letters per line. */
+@media (max-width: 640px) and (orientation: portrait) {
+  .hero__name {
+    font-size: min(40vw, 16.5svh);
+    line-height: 0.93;
+  }
+  .hero__name [data-chunk] {
+    display: block;
+  }
 }
 /* Once the canvas has taken over, the real text stays for screen readers and selection only. */
 .hero.is-live .hero__name {
