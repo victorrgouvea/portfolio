@@ -60,7 +60,7 @@ const en: Content = {
   },
   hero: {
     role: 'Software engineer, applied AI',
-    lede: 'I take web, mobile and AI products from a rough idea to something people use in production.',
+    lede: 'I build web, mobile and AI products end to end, from the first conversation to a live product in production.',
     place: 'Florianópolis, Brazil',
     ctaWork: 'See the work',
     ctaCv: 'Download CV',
@@ -77,8 +77,8 @@ const en: Content = {
       '.',
     ],
     [
-      'I talk to the client, write the code, ship it and keep it running. Then I ',
-      { mark: 'change it based on how people use it' },
+      'Client project or in-house product, I take it from scope to production on my own, then ',
+      { mark: 'keep shaping it around how people use it' },
       '.',
     ],
   ],
@@ -307,7 +307,7 @@ const pt: Content = {
   },
   hero: {
     role: 'Engenheiro de software, IA aplicada',
-    lede: 'Levo produtos web, mobile e de IA de uma ideia inicial até algo que as pessoas usam em produção.',
+    lede: 'Construo produtos web, mobile e de IA de ponta a ponta, da primeira conversa até o produto rodando em produção.',
     place: 'Florianópolis, Brasil',
     ctaWork: 'Ver projetos',
     ctaCv: 'Baixar currículo',
@@ -324,8 +324,8 @@ const pt: Content = {
       '.',
     ],
     [
-      'Converso com o cliente, escrevo o código, coloco no ar e mantenho funcionando. Depois ',
-      { mark: 'mudo o produto conforme as pessoas usam' },
+      'Seja projeto de cliente ou produto da casa, levo do escopo à produção por conta própria, e depois ',
+      { mark: 'sigo ajustando conforme as pessoas usam' },
       '.',
     ],
   ],
