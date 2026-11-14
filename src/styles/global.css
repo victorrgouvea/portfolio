@@ -187,8 +187,8 @@ a {
 .hero__name {
   font-family: var(--display);
   font-weight: 800;
-  font-size: min(22vw, 34svh);
-  line-height: 0.92;
+  font-size: min(22vw, 32svh);
+  line-height: 1;
   letter-spacing: -0.035em;
   text-transform: uppercase;
   margin-left: -0.04em;
@@ -221,7 +221,7 @@ a {
 .hero__foot {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: 1.5rem 3rem;
 }
@@ -234,9 +234,18 @@ a {
   letter-spacing: -0.015em;
   max-width: 24ch;
 }
+/* Role and place sit directly on top of the actions, as one block. */
+.hero__side {
+  display: grid;
+  gap: 1rem;
+}
 .hero__meta {
   font-size: 0.95rem;
   color: var(--mute);
+}
+.hero__role {
+  color: var(--ink);
+  font-weight: 600;
 }
 .hero__cta {
   display: flex;
@@ -269,6 +278,17 @@ a {
 .btn:hover {
   background: var(--ink);
   color: var(--fog);
+}
+.btn--icon {
+  width: 2.95rem;
+  height: 2.95rem;
+  padding: 0;
+  justify-content: center;
+}
+.btn--icon svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
 }
 .btn--solid {
   background: var(--cobalt);
