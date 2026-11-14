@@ -1,8 +1,8 @@
 import { defineConfig } from 'astro/config';
 
-// GitHub Pages project site: served under /portfolio until the custom domain is live.
-// When victorgouvea.com.br points here, set CUSTOM_DOMAIN to true and add public/CNAME.
-const CUSTOM_DOMAIN = false;
+// Served at victorgouvea.com.br (public/CNAME). Set CUSTOM_DOMAIN to false, and remove
+// public/CNAME, to go back to victorrgouvea.github.io/portfolio.
+const CUSTOM_DOMAIN = true;
 
 export default defineConfig({
   site: CUSTOM_DOMAIN ? 'https://victorgouvea.com.br' : 'https://victorrgouvea.github.io',
