@@ -144,8 +144,8 @@ function initHero() {
       o.fillText(text, r.left - rect.left, baseline);
     });
 
-    const gap = w < 700 ? 4 : w < 1400 ? 5 : 6;
-    size = gap - (gap < 5 ? 1.2 : 1.6);
+    const gap = w < 700 ? 3 : w < 1400 ? 5 : 6;
+    size = gap - (gap < 5 ? 0.8 : 1.6);
     const data = o.getImageData(0, 0, w, h).data;
     const next: Dot[] = [];
     for (let y = 0; y < h; y += gap) {

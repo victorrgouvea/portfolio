@@ -181,14 +181,18 @@ a {
   display: block;
   width: fit-content;
 }
-/* Narrow portrait screens: the name becomes a four-line poster, three letters per line. */
+/* Narrow portrait screens: the hero is only as tall as its content, so the name sits
+   right above the introduction and the next section shows on the first screen. */
 @media (max-width: 640px) and (orientation: portrait) {
-  .hero__name {
-    font-size: min(40vw, 16.5svh);
-    line-height: 0.93;
+  .hero {
+    min-height: 0;
+    justify-content: flex-start;
+    gap: 1.75rem;
+    padding-top: calc(var(--nav-h) + 2rem);
+    padding-bottom: 3rem;
   }
-  .hero__name [data-chunk] {
-    display: block;
+  .hero__name {
+    margin-block: 0;
   }
 }
 /* Once the canvas has taken over, the real text stays for screen readers and selection only. */
