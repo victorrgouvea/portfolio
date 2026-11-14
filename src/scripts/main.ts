@@ -67,7 +67,9 @@ if (!reduced) {
       {
         '--fill': '100%',
         ease: 'none',
-        scrollTrigger: { trigger: mark, start: 'top 82%', end: 'top 48%', scrub: 0.4 },
+        // Starts as the phrase enters the screen and is complete while it is still in the
+        // lower part of it, so the last phrase is fully marked before the next section shows.
+        scrollTrigger: { trigger: mark, start: 'top 100%', end: 'top 85%', scrub: 0.3 },
       },
     );
   });
