@@ -104,13 +104,6 @@ a {
 .nav.is-hidden {
   transform: translateY(-100%);
 }
-.nav__name {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 1.15rem;
-  letter-spacing: -0.01em;
-  text-decoration: none;
-}
 .nav__links {
   display: flex;
   gap: clamp(1rem, 2.4vw, 2.2rem);
@@ -124,6 +117,7 @@ a {
   text-decoration: underline;
 }
 .nav__lang {
+  margin-left: auto;
   display: inline-flex;
   padding: 3px;
   border: 1px solid var(--ink);
@@ -188,11 +182,12 @@ a {
     min-height: 0;
     justify-content: flex-start;
     gap: 1.75rem;
-    padding-top: calc(var(--nav-h) + 2rem);
-    padding-bottom: 3rem;
+    padding-top: calc(var(--nav-h) + 1.25rem);
+    padding-bottom: 0.5rem;
   }
   .hero__name {
     margin-block: 0;
+    line-height: 1;
   }
 }
 /* Once the canvas has taken over, the real text stays for screen readers and selection only. */
@@ -280,6 +275,11 @@ a {
 .statement p + p {
   margin-left: auto;
   max-width: 17em;
+}
+@media (max-width: 640px) and (orientation: portrait) {
+  .statement {
+    padding-top: 3rem;
+  }
 }
 mark {
   color: inherit;
