@@ -125,6 +125,15 @@ const cvHref = url(t.contact.cvHref);
                         <dd>{c.stack.join(', ')}</dd>
                       </div>
                     </dl>
+                    {c.links && (
+                      <p class="case__link">
+                        {c.links.map((l) => (
+                          <a class="btn" href={l.href} target="_blank" rel="noopener">
+                            {l.label}
+                          </a>
+                        ))}
+                      </p>
+                    )}
                   </div>
                   <div class="case__art" aria-hidden="true">
                     <CaseArt id={c.id} art={c.art} />
@@ -156,6 +165,7 @@ const cvHref = url(t.contact.cvHref);
                       ) : (
                         it.name
                       )}
+                      {it.now && <em class="row__now">{t.more.now}</em>}
                     </span>
                     <span class="row__what">{it.what}</span>
                     <span class="row__stack">{it.stack}</span>

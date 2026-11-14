@@ -16,6 +16,8 @@ export interface CaseStudy {
   summary: string;
   points: string[];
   stack: string[];
+  /** Public page of the product, when it is still live. */
+  links?: { label: string; href: string }[];
   /** Short strings used inside the illustration. */
   art: Record<string, string>;
 }
@@ -29,8 +31,9 @@ export interface Content {
   cases: CaseStudy[];
   more: {
     title: string;
+    now: string;
     intro: string;
-    groups: { name: string; items: { name: string; year: string; what: string; stack: string; href?: string }[] }[];
+    groups: { name: string; items: { name: string; year: string; what: string; stack: string; href?: string; now?: boolean }[] }[];
     footnote: string;
   };
   experience: {
@@ -93,7 +96,7 @@ const en: Content = {
       id: 'deepdive',
       name: 'Deep Dive',
       kind: 'AI analysis of bankruptcy and restructuring cases',
-      years: '2025 – 2026',
+      years: '2024 – 2026',
       role: 'Developer of the AI workflows, in direct contact with the client',
       summary:
         'Investors in distressed assets need to know what is inside a bankruptcy case before they buy credit in it. The case file is a PDF that can pass 10,000 pages. Deep Dive reads it and writes the report.',
@@ -104,7 +107,11 @@ const en: Content = {
         'Scrapers for the São Paulo court systems (e-SAJ and DJE) fill in what the PDF does not contain.',
       ],
       stack: ['Python', 'LLM APIs', 'OpenRouter', 'PDF processing', 'Web scraping', 'Pandas'],
-      art: { in: '10,000+ pages', out: 'Report + spreadsheets', a: 'Detect', b: 'Transcribe', c: 'Extract', d: 'Merge' },
+      art: {
+        a: 'Detect', b: 'Transcribe', c: 'Extract', d: 'Merge',
+        report: 'Report', h1: 'The company', h2: 'Status of the case', h3: 'Risks and red flags',
+        sheet: 'Creditors', c1: 'Creditor', c2: 'Class', c3: 'Value',
+      },
     },
     {
       id: 'ventiur',
@@ -139,11 +146,13 @@ const en: Content = {
       ],
       stack: ['Python', 'Flask', 'WhatsApp Cloud API', 'Gemini', 'Kamal'],
       art: {
-        u1: 'Remind me to send the report tomorrow at 9',
-        b1: 'Done. I will remind you tomorrow at 9:00.',
-        u2: 'Summarize this audio for me',
-        b2: 'Summary: the meeting moved to Thursday and the proposal is due Friday.',
-        users: '6,000+ users',
+        status: 'online',
+        audio: '1:42',
+        u1: 'Summarize this audio for me',
+        b1: 'Summary: the meeting moved to Thursday at 3 pm and the proposal is due Friday.',
+        u2: 'Write a short reply confirming I will be there',
+        b2: 'Sure: "Confirmed, see you Thursday at 3 pm. I will send the proposal by Friday."',
+        input: 'Message',
       },
     },
     {
@@ -161,7 +170,11 @@ const en: Content = {
         'Published to the App Store and Google Play.',
       ],
       stack: ['React Native', 'Expo', 'TypeScript', 'Supabase', 'NativeWind', 'PostHog'],
-      art: { title: 'Today', w: 'Upper body', e1: 'Bench press', e2: 'Barbell row', e3: 'Shoulder press', sets: 'sets', start: 'Start workout' },
+      links: [
+        { label: 'App Store', href: 'https://apps.apple.com/br/app/beatfit/id6807080270' },
+        { label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.codevon.beatfit' },
+      ],
+      art: { alt: 'BeatFit screens: weekly dashboard and workout duration setup' },
     },
     {
       id: 'fintz',
@@ -177,11 +190,18 @@ const en: Content = {
         'PostgreSQL storage and the endpoints clients consume.',
       ],
       stack: ['Python', 'Dagster', 'Scrapy', 'PostgreSQL', 'Docker', 'GitHub Actions'],
-      art: { a: 'Sources', b: 'Scrapers', c: 'Dagster ETL', d: 'PostgreSQL', e: 'API', f: 'B2B clients' },
+      links: [{ label: 'Visit fintz.com.br', href: 'https://fintz.com.br' }],
+      art: {
+        a: 'Sources', b: 'Scrapers', c: 'Dagster ETL', d: 'PostgreSQL', e: 'API', f: 'B2B clients',
+        g1: 'B3 exchange', e1: 'Historical quotes', e2: 'Fundamental indicators', e3: 'Dividends and corporate events',
+        g2: 'Funds', e4: 'Daily fund data',
+        g3: 'Treasury', e5: 'Historical prices and rates',
+      },
     },
   ],
   more: {
     title: 'More projects',
+    now: 'Working on it now',
     intro: 'Other things I built or contributed to, at work, on my own and at university.',
     groups: [
       {
@@ -189,9 +209,7 @@ const en: Content = {
         items: [
           { name: 'TakePics.AI', year: '2024', what: 'Realistic AI photos of you from custom-trained models, with payments.', stack: 'Nuxt, Replicate, Stripe' },
           { name: 'Lucro10', year: '2026', what: 'Profitability dashboard for marketplace sellers. Early development.', stack: 'Nuxt, Supabase, TypeScript' },
-          { name: 'Operating reports', year: '2024 – 2026', what: 'Turns monthly trial balances of companies in court-supervised reorganization into financial statements and reports.', stack: 'Python, Pandas' },
           { name: 'Meu Novo Cabelo', year: '2025', what: 'Try hairstyles and colors on your own photo with AI.', stack: 'Nuxt, Supabase, Replicate' },
-          { name: 'RoomRemake', year: '2025', what: 'Redesign a room from a photo with AI style transfer.', stack: 'Nuxt, Replicate, Stripe' },
           { name: 'Eletrificado', year: '2024', what: 'News site about electric vehicles that collects, rewrites and translates stories automatically.', stack: 'Python, Nuxt, LLMs' },
           { name: 'Fintz Bot', year: '2025', what: 'WhatsApp bot to log and understand daily expenses.', stack: 'Python, OpenAI Assistants' },
           { name: 'F1 Bot', year: '2024', what: 'Discord bot with race schedules, standings and weekly Grand Prix reminders.', stack: 'Python, AWS Lambda' },
@@ -200,16 +218,14 @@ const en: Content = {
       {
         name: 'Personal',
         items: [
-          { name: 'GestoClin', year: '2026', what: 'Patient records, scheduling and team management for clinics, with role-based access.', stack: 'Nuxt, Supabase, RLS', href: 'https://github.com/victorrgouvea/medcase-site' },
+          { name: 'GestoClin', year: '2026', what: 'Patient records, scheduling and team management for clinics, with role-based access.', stack: 'Nuxt, Supabase, RLS', href: 'https://gestoclin.com', now: true },
           { name: 'Candidatos SC', year: '2025', what: 'Scraper and ETL pipeline for data on political candidates in Santa Catarina.', stack: 'Python, Dagster, Airflow', href: 'https://github.com/victorrgouvea/dagster-candidatos-sc' },
         ],
       },
       {
         name: 'University (UFSC)',
         items: [
-          { name: 'Interactive Graphical System', year: '2024', what: '2D and 3D graphics system written from scratch for the Computer Graphics course.', stack: 'Python, GTK', href: 'https://github.com/victorrgouvea/Trabalhos-CG' },
           { name: 'GameScrapper', year: '2024', what: 'Crawlers that collect game prices from Steam, Epic Games and GOG.', stack: 'Python, Scrapy', href: 'https://github.com/victorrgouvea/GameScrapper' },
-          { name: 'Operating systems', year: '2023 – 2024', what: 'Coursework for the two Operating Systems courses, including work on the EPOS embedded OS.', stack: 'C++', href: 'https://github.com/victorrgouvea/Trabalho_SO1' },
         ],
       },
     ],
@@ -288,7 +304,7 @@ const en: Content = {
     cv: 'Download CV (PDF)',
     cvHref: '/cv/victor-gouvea-en.pdf',
   },
-  footer: 'Designed and built by Victor Gouvêa with Astro.',
+  footer: 'Designed and built by Victor Gouvêa.',
 };
 
 const pt: Content = {
@@ -340,7 +356,7 @@ const pt: Content = {
       id: 'deepdive',
       name: 'Deep Dive',
       kind: 'Análise de processos de falência e recuperação judicial com IA',
-      years: '2025 – 2026',
+      years: '2024 – 2026',
       role: 'Desenvolvedor dos fluxos de IA, em contato direto com o cliente',
       summary:
         'Quem investe em ativos estressados precisa saber o que há em um processo de falência antes de comprar crédito nele. Os autos são um PDF que pode passar de 10 mil páginas. O Deep Dive lê tudo e escreve o relatório.',
@@ -351,7 +367,11 @@ const pt: Content = {
         'Scrapers dos sistemas do TJSP (e-SAJ e DJE) completam o que o PDF não traz.',
       ],
       stack: ['Python', 'APIs de LLM', 'OpenRouter', 'Processamento de PDF', 'Web scraping', 'Pandas'],
-      art: { in: '10 mil+ páginas', out: 'Relatório + planilhas', a: 'Detectar', b: 'Transcrever', c: 'Extrair', d: 'Fundir' },
+      art: {
+        a: 'Detectar', b: 'Transcrever', c: 'Extrair', d: 'Fundir',
+        report: 'Relatório', h1: 'A empresa', h2: 'Situação do processo', h3: 'Riscos e alertas',
+        sheet: 'Credores', c1: 'Credor', c2: 'Classe', c3: 'Valor',
+      },
     },
     {
       id: 'ventiur',
@@ -386,11 +406,13 @@ const pt: Content = {
       ],
       stack: ['Python', 'Flask', 'WhatsApp Cloud API', 'Gemini', 'Kamal'],
       art: {
-        u1: 'Me lembra de enviar o relatório amanhã às 9h',
-        b1: 'Pronto. Vou te lembrar amanhã às 9h.',
-        u2: 'Resume esse áudio pra mim',
-        b2: 'Resumo: a reunião passou para quinta e a proposta fica para sexta.',
-        users: '6 mil+ usuários',
+        status: 'online',
+        audio: '1:42',
+        u1: 'Resume esse áudio pra mim',
+        b1: 'Resumo: a reunião passou para quinta às 15h e a proposta fica para sexta.',
+        u2: 'Escreve uma resposta curta confirmando que eu vou',
+        b2: 'Claro: "Confirmado, nos vemos quinta às 15h. Envio a proposta até sexta."',
+        input: 'Mensagem',
       },
     },
     {
@@ -408,7 +430,11 @@ const pt: Content = {
         'Publicado na App Store e no Google Play.',
       ],
       stack: ['React Native', 'Expo', 'TypeScript', 'Supabase', 'NativeWind', 'PostHog'],
-      art: { title: 'Hoje', w: 'Superiores', e1: 'Supino reto', e2: 'Remada curvada', e3: 'Desenvolvimento', sets: 'séries', start: 'Iniciar treino' },
+      links: [
+        { label: 'App Store', href: 'https://apps.apple.com/br/app/beatfit/id6807080270' },
+        { label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.codevon.beatfit&hl=pt_BR' },
+      ],
+      art: { alt: 'Telas do BeatFit: painel da semana e escolha da duração do treino' },
     },
     {
       id: 'fintz',
@@ -424,11 +450,18 @@ const pt: Content = {
         'Armazenamento em PostgreSQL e os endpoints consumidos pelos clientes.',
       ],
       stack: ['Python', 'Dagster', 'Scrapy', 'PostgreSQL', 'Docker', 'GitHub Actions'],
-      art: { a: 'Fontes', b: 'Scrapers', c: 'ETL no Dagster', d: 'PostgreSQL', e: 'API', f: 'Clientes B2B' },
+      links: [{ label: 'Visitar fintz.com.br', href: 'https://fintz.com.br' }],
+      art: {
+        a: 'Fontes', b: 'Scrapers', c: 'ETL no Dagster', d: 'PostgreSQL', e: 'API', f: 'Clientes B2B',
+        g1: 'Bolsa B3', e1: 'Cotação histórica', e2: 'Indicadores fundamentalistas', e3: 'Proventos e eventos corporativos',
+        g2: 'Fundos', e4: 'Dados diários de fundos',
+        g3: 'Tesouro', e5: 'Preços e taxas históricos',
+      },
     },
   ],
   more: {
     title: 'Mais projetos',
+    now: 'Trabalhando nele agora',
     intro: 'Outras coisas que construí ou para as quais contribuí, no trabalho, por conta própria e na universidade.',
     groups: [
       {
@@ -436,9 +469,7 @@ const pt: Content = {
         items: [
           { name: 'TakePics.AI', year: '2024', what: 'Fotos realistas suas geradas por IA com modelos personalizados, com pagamentos.', stack: 'Nuxt, Replicate, Stripe' },
           { name: 'Lucro10', year: '2026', what: 'Painel de rentabilidade para vendedores de marketplaces. Fase inicial.', stack: 'Nuxt, Supabase, TypeScript' },
-          { name: 'Relatórios operacionais', year: '2024 – 2026', what: 'Transforma balancetes mensais de empresas em recuperação judicial em demonstrações financeiras e relatórios.', stack: 'Python, Pandas' },
           { name: 'Meu Novo Cabelo', year: '2025', what: 'Teste cortes e cores de cabelo na sua própria foto com IA.', stack: 'Nuxt, Supabase, Replicate' },
-          { name: 'RoomRemake', year: '2025', what: 'Redecore um ambiente a partir de uma foto com IA.', stack: 'Nuxt, Replicate, Stripe' },
           { name: 'Eletrificado', year: '2024', what: 'Site de notícias sobre carros elétricos que coleta, reescreve e traduz matérias automaticamente.', stack: 'Python, Nuxt, LLMs' },
           { name: 'Fintz Bot', year: '2025', what: 'Bot de WhatsApp para registrar e entender os gastos do dia a dia.', stack: 'Python, OpenAI Assistants' },
           { name: 'F1 Bot', year: '2024', what: 'Bot de Discord com calendário, classificação e lembretes semanais dos GPs.', stack: 'Python, AWS Lambda' },
@@ -447,16 +478,14 @@ const pt: Content = {
       {
         name: 'Pessoais',
         items: [
-          { name: 'GestoClin', year: '2026', what: 'Prontuário, agenda e gestão de equipe para clínicas, com acesso por papel.', stack: 'Nuxt, Supabase, RLS', href: 'https://github.com/victorrgouvea/medcase-site' },
+          { name: 'GestoClin', year: '2026', what: 'Prontuário, agenda e gestão de equipe para clínicas, com acesso por papel.', stack: 'Nuxt, Supabase, RLS', href: 'https://gestoclin.com', now: true },
           { name: 'Candidatos SC', year: '2025', what: 'Scraper e pipeline de ETL com dados de candidatos políticos de Santa Catarina.', stack: 'Python, Dagster, Airflow', href: 'https://github.com/victorrgouvea/dagster-candidatos-sc' },
         ],
       },
       {
         name: 'Universidade (UFSC)',
         items: [
-          { name: 'Sistema Gráfico Interativo', year: '2024', what: 'Sistema gráfico 2D e 3D escrito do zero na disciplina de Computação Gráfica.', stack: 'Python, GTK', href: 'https://github.com/victorrgouvea/Trabalhos-CG' },
           { name: 'GameScrapper', year: '2024', what: 'Crawlers que coletam preços de jogos na Steam, Epic Games e GOG.', stack: 'Python, Scrapy', href: 'https://github.com/victorrgouvea/GameScrapper' },
-          { name: 'Sistemas operacionais', year: '2023 – 2024', what: 'Trabalhos das duas disciplinas de Sistemas Operacionais, incluindo o SO embarcado EPOS.', stack: 'C++', href: 'https://github.com/victorrgouvea/Trabalho_SO1' },
         ],
       },
     ],
@@ -535,7 +564,7 @@ const pt: Content = {
     cv: 'Baixar currículo (PDF)',
     cvHref: '/cv/victor-gouvea-pt-br.pdf',
   },
-  footer: 'Projetado e desenvolvido por Victor Gouvêa com Astro.',
+  footer: 'Projetado e desenvolvido por Victor Gouvêa.',
 };
 
 export const content: Record<Lang, Content> = { en, pt };

@@ -1,4 +1,10 @@
 ---
+import { Image } from 'astro:assets';
+import robot from '../assets/cases/smartzap-avatar.png';
+import beatfitHome from '../assets/cases/beatfit-1.png';
+import beatfitSetup from '../assets/cases/beatfit-3.png';
+import fintzLogo from '../assets/cases/fintz-logo.png';
+
 interface Props {
   id: 'deepdive' | 'ventiur' | 'smartzap' | 'beatfit' | 'fintz';
   art: Record<string, string>;
@@ -11,15 +17,17 @@ const lines = (n: number, hot: number[] = []) =>
 {
   id === 'deepdive' && (
     <div class="art art-dd">
-      <div class="art-dd__pages">
-        {[0, 1, 2, 3].map((i) => (
-          <div class="sheet" style={`--i:${i}`}>
-            {lines(9, i === 3 ? [2, 5, 6] : []).map((l) => (
-              <i class:list={[{ hot: l.hot }]} style={`width:${l.w}%`} />
-            ))}
-          </div>
-        ))}
-        <p class="art__label">{art.in}</p>
+      <div class="art-dd__in">
+        <div class="art-dd__pages">
+          {[0, 1, 2, 3].map((i) => (
+            <div class="sheet" style={`--i:${i}`}>
+              {i === 3 && <b class="sheet__tag">PDF</b>}
+              {lines(9, i === 3 ? [2, 5, 6] : []).map((l) => (
+                <i class:list={[{ hot: l.hot }]} style={`width:${l.w}%`} />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
       <ol class="art-dd__steps">
         <li>{art.a}</li>
@@ -28,12 +36,39 @@ const lines = (n: number, hot: number[] = []) =>
         <li>{art.d}</li>
       </ol>
       <div class="art-dd__out">
-        <div class="grid">
-          {Array.from({ length: 20 }, (_, i) => (
-            <i class:list={[{ head: i < 4, hot: i === 9 || i === 14 }]} />
+        <div class="doc">
+          <p class="doc__title">
+            <b>DOCX</b>
+            {art.report}
+          </p>
+          {[art.h1, art.h2, art.h3].map((h, i) => (
+            <div class="doc__sec">
+              <p>
+                <span>{i + 1}</span>
+                {h}
+              </p>
+              <i style={`width:${92 - i * 9}%`} />
+              <i style={`width:${70 + i * 8}%`} />
+            </div>
           ))}
         </div>
-        <p class="art__label">{art.out}</p>
+        <div class="xls">
+          <p class="xls__title">
+            <b>XLSX</b>
+            {art.sheet}
+          </p>
+          <div class="xls__grid">
+            <span>{art.c1}</span>
+            <span>{art.c2}</span>
+            <span>{art.c3}</span>
+            {[
+              [78, 40, 62],
+              [60, 55, 48],
+              [86, 40, 70],
+              [52, 62, 44],
+            ].map((row) => row.map((w, c) => <i class:list={[{ num: c === 2 }]} style={`--w:${w}%`} />))}
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -67,11 +102,46 @@ const lines = (n: number, hot: number[] = []) =>
 {
   id === 'smartzap' && (
     <div class="art art-sz">
-      <p class="bubble bubble--me">{art.u1}</p>
-      <p class="bubble">{art.b1}</p>
-      <p class="bubble bubble--me">{art.u2}</p>
-      <p class="bubble">{art.b2}</p>
-      <p class="art__label">{art.users}</p>
+      <div class="chat">
+        <div class="chat__head">
+          <Image class="chat__avatar" src={robot} alt="" width={112} height={112} />
+          <div>
+            <p class="chat__name">SmartZap</p>
+            <p class="chat__status">{art.status}</p>
+          </div>
+        </div>
+        <div class="chat__body">
+          <div class="msg msg--me msg--audio">
+            <span class="msg__play" />
+            <span class="msg__wave">
+              {[5, 9, 14, 8, 12, 16, 10, 6, 13, 9, 15, 7, 11, 5, 9, 13, 8, 4].map((h) => (
+                <i style={`height:${h}px`} />
+              ))}
+            </span>
+            <span class="msg__time">{art.audio}</span>
+          </div>
+          <p class="msg msg--me">
+            {art.u1}
+            <span class="msg__time">09:41</span>
+          </p>
+          <p class="msg">
+            {art.b1}
+            <span class="msg__time">09:41</span>
+          </p>
+          <p class="msg msg--me">
+            {art.u2}
+            <span class="msg__time">09:42</span>
+          </p>
+          <p class="msg">
+            {art.b2}
+            <span class="msg__time">09:42</span>
+          </p>
+        </div>
+        <div class="chat__input">
+          <span>{art.input}</span>
+          <i />
+        </div>
+      </div>
     </div>
   )
 }
@@ -79,21 +149,8 @@ const lines = (n: number, hot: number[] = []) =>
 {
   id === 'beatfit' && (
     <div class="art art-bf">
-      <div class="phone">
-        <p class="phone__eyebrow">{art.title}</p>
-        <p class="phone__title">{art.w}</p>
-        <ul>
-          {[art.e1, art.e2, art.e3].map((e, i) => (
-            <li>
-              <span>{e}</span>
-              <span>
-                {4 - (i % 2)} {art.sets}
-              </span>
-            </li>
-          ))}
-        </ul>
-        <p class="phone__btn">{art.start}</p>
-      </div>
+      <Image class="shot shot--a" src={beatfitHome} alt={art.alt} width={480} />
+      <Image class="shot shot--b" src={beatfitSetup} alt="" width={480} />
     </div>
   )
 }
@@ -101,6 +158,22 @@ const lines = (n: number, hot: number[] = []) =>
 {
   id === 'fintz' && (
     <div class="art art-fz">
+      <div class="api">
+        <p class="api__brand">
+          <Image src={fintzLogo} alt="" width={56} height={56} />
+          <span>fintz</span>
+        </p>
+        <dl>
+          <dt>{art.g1}</dt>
+          <dd>{art.e1}</dd>
+          <dd>{art.e2}</dd>
+          <dd>{art.e3}</dd>
+          <dt>{art.g2}</dt>
+          <dd>{art.e4}</dd>
+          <dt>{art.g3}</dt>
+          <dd>{art.e5}</dd>
+        </dl>
+      </div>
       <ol>
         <li>{art.a}</li>
         <li>{art.b}</li>
@@ -109,9 +182,6 @@ const lines = (n: number, hot: number[] = []) =>
         <li class="on">{art.e}</li>
         <li>{art.f}</li>
       </ol>
-      <svg viewBox="0 0 300 90" preserveAspectRatio="none">
-        <polyline points="0,70 30,62 60,66 90,48 120,54 150,36 180,42 210,24 240,30 270,14 300,18" />
-      </svg>
     </div>
   )
 }
